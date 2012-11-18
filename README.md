@@ -10,7 +10,7 @@ licence:
  	[http://opensource.org/licenses/bsd-license.php](http://opensource.org/licenses/bsd-license.php "http://opensource.org/licenses/bsd-license.php")
 
 full wiki, documentation & installation:
- 	[http://opensource.org/licenses/bsd-license.php](http://yiiframeworkenespanol.org/crugeconnector "http://yiiframeworkenespanol.org/crugeconnector")
+ 	[http://yiiframeworkenespanol.org/crugeconnector](http://yiiframeworkenespanol.org/crugeconnector "http://yiiframeworkenespanol.org/crugeconnector")
 
 (Source Code & Comments in English)
 
