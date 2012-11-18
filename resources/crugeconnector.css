@@ -1,0 +1,19 @@
+
+.crugeconnector {
+  display: block;	
+  clear: both;
+} 
+.crugeconnector ul {
+	list-style: none;
+	overflow: auto;
+	margin: 0px;
+	padding: 0px;
+}
+.crugeconnector ul li {
+	float: left;
+	margin: 0;
+	margin-right: 10px;
+}
+.crugeconnector ul img {
+	max-height: 30px;
+}
