@@ -9,9 +9,7 @@ author:
 licence:
  	[http://opensource.org/licenses/bsd-license.php](http://opensource.org/licenses/bsd-license.php "http://opensource.org/licenses/bsd-license.php")
 
-Full Wiki at (spanish only by now):
-	
-	[http://yiiframeworkenespanol.org/crugeconnector](http://yiiframeworkenespanol.org/crugeconnector "http://yiiframeworkenespanol.org/crugeconnector")
+[Full Wiki Documentation and Setup]("http://yiiframeworkenespanol.org/crugeconnector "Full Wiki Documentation & Setup")
 
 (Source Code & Comments in English)
 
