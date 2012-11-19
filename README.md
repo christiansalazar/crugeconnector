@@ -25,12 +25,10 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 
 1- in protected/config/main.php, under 'imports' key:
 ~~~
-[php]
 'application.extensions.crugeconnector.*',
 ~~~
 2- in protected/config/main.php, under 'components' key:
 ~~~
-[php]
 	'crugeconnector'=>array(
 	'class'=>'ext.crugeconnector.CrugeConnector',
 		'hostcontrollername'=>'site',
@@ -68,7 +66,6 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 ~~~
 3- in protected/controllers/siteContoller.php (by default)
 ~~~
-[php]
 	public function actions()
 	{
 		return array(
