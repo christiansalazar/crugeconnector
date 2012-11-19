@@ -3,29 +3,34 @@ CrugeConnector
 
 Remote Login using Google, Facebook and others (extensible) for Yii Framework.
 
-author:
-	Christian Salazar H. <christiansalazarh@gmail.com>
+**author:**
 
-licence:
- 	[http://opensource.org/licenses/bsd-license.php](http://opensource.org/licenses/bsd-license.php "http://opensource.org/licenses/bsd-license.php")
+Christian Salazar H. <christiansalazarh@gmail.com>
 
-full wiki, documentation & installation:
- 	[http://yiiframeworkenespanol.org/wiki/index.php?title=CrugeConnector](http://yiiframeworkenespanol.org/wiki/index.php?title=CrugeConnector "http://yiiframeworkenespanol.org/wiki/index.php?title=CrugeConnector")
+**licence:**
+
+[http://opensource.org/licenses/bsd-license.php](http://opensource.org/licenses/bsd-license.php "http://opensource.org/licenses/bsd-license.php")
+
+**full wiki, documentation & installation:**
+
+[http://yiiframeworkenespanol.org/wiki/index.php?title=CrugeConnector](http://yiiframeworkenespanol.org/wiki/index.php?title=CrugeConnector "http://yiiframeworkenespanol.org/wiki/index.php?title=CrugeConnector")
 
 (Source Code & Comments in English)
 
-Screen Shot:
+**Screen Shot:**
 
 ![CrugeConnector Screen Capture](https://bitbucket.org/christiansalazarh/crugeconnector/downloads/crugeconnector--viewlogin.png "CrugeConnector Screen Capture")
 
-quick setup:
+**Quick Setup:**
 
-1. in protected/config/main.php, under 'imports' key:
-	
-	'application.extensions.crugeconnector.*',	
-
-2. in protected/config/main.php, under 'components' key:
-
+1- in protected/config/main.php, under 'imports' key:
+~~~
+[php]
+'application.extensions.crugeconnector.*',
+~~~
+2- in protected/config/main.php, under 'components' key:
+~~~
+[php]
 	'crugeconnector'=>array(
 	'class'=>'ext.crugeconnector.CrugeConnector',
 		'hostcontrollername'=>'site',
@@ -60,9 +65,10 @@ quick setup:
 			),
 		),
 	),
-
-3. in protected/controllers/siteContoller.php (by default)
-
+~~~
+3- in protected/controllers/siteContoller.php (by default)
+~~~
+[php]
 	public function actions()
 	{
 		return array(
@@ -92,4 +98,6 @@ quick setup:
 	public function actionLoginError($key, $message=''){
 		$this->renderText('<h1>Login Error</h1><p>'.$message.'</p> key='.$key);
 	}
+~~~
+
 
