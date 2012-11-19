@@ -39,7 +39,7 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 				// required by crugeconnector:
 				'enabled'=>true,
 				'class'=>'ext.crugeconnector.clients.Facebook',
-				'callback'=>'http://yoursite.com/app/facebookcallback.php',
+				'callback'=>'http://yoursite.com/app/facebook-callback.php',
 				// required by remote interface:
 				'client_id'=>"yourappid",
 				'client_secret'=>"yoursecretid",
@@ -49,7 +49,7 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 				// required by crugeconnector:
 				'enabled'=>true,
 				'class'=>'ext.crugeconnector.clients.Google',
-				'callback'=>'http://yoursite.com/app1/googlecallback.php',
+				'callback'=>'http://yoursite.com/app1/google-callback.php',
 				// required by remote interface:
 				'hostname'=>'yoursite.com',
 				'identity'=>'https://www.google.com/accounts/o8/id',
@@ -96,7 +96,6 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 		$this->renderText('<h1>Login Error</h1><p>'.$message.'</p> key='.$key);
 	}
 ~~~
-~~~
 4- insert the component into your protected/views/site/login view:
 ~~~
 	<?php if(Yii::app()->crugeconnector->hasEnabledClients){ ?>
@@ -114,5 +113,48 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 		</ul>
 	</div>
 	<?php } ?>
+~~~
+5- create a callback (one for google and another one for facebook)
+~~~
+	the first one for facebook: (dont forget to create a facebook app)
+	
+	<?php
+	// copy this code into /yourapp/facebook-callback.php
+	// don't forget to stablish the $yii path !!
+	//
+	$yii=dirname(__FILE__).'/../yii/framework/yii.php';
+	$config=dirname(__FILE__).'/protected/config/main.php';
+	
+	defined('YII_DEBUG') or define('YII_DEBUG',false)
+	defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
+	
+	$_GET['r'] = '/site/crugeconnector';	// <--using 'site' ?
+	$_GET['crugekey'] = 'facebook';			// <--facebook key
+	$_GET['crugemode'] = 'callback';
+	
+	require_once($yii);
+	Yii::createWebApplication($config)->run();
+	?>
+
+	and another one for google: 
+
+	<?php
+	// copy this code into /yourapp/google-callback.php
+	// don't forget to stablish the $yii path !!
+	//
+	$yii=dirname(__FILE__).'/../yii/framework/yii.php';
+	$config=dirname(__FILE__).'/protected/config/main.php';
+	
+	defined('YII_DEBUG') or define('YII_DEBUG',false)
+	defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
+	
+	$_GET['r'] = '/site/crugeconnector';	// <--using 'site' ?
+	$_GET['crugekey'] = 'google';			// <--google key
+	$_GET['crugemode'] = 'callback';
+	
+	require_once($yii);
+	Yii::createWebApplication($config)->run();
+	?>
+
 ~~~
 
