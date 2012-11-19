@@ -97,4 +97,23 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 	}
 ~~~
 
+~~~
+4- insert the component into your protected/views/site/login view:
+~~~
+	<?php if(Yii::app()->crugeconnector->hasEnabledClients){ ?>
+	<div class='crugeconnector'>
+		<span>Tambien puedes iniciar sesión con:</span>
+		<ul>
+		<?php 
+			$cc = Yii::app()->crugeconnector;
+			foreach($cc->enabledClients as $key=>$config){
+				$image = CHtml::image($cc->getClientDefaultImage($key));
+				echo "<li>".CHtml::link($image,
+					$cc->getClientLoginUrl($key))."</li>";
+			}
+		?>
+		</ul>
+	</div>
+	<?php } ?>
+~~~
 
