@@ -154,6 +154,11 @@ abstract class CrugeBaseClient {
 			}
 			$n++;
 		}
+
+		// always informs about which key is used:
+		//
+		$url_dest .= '&key='.$this->getKey();
+		
 		// if an error is present then must send the error via url
 		//
 		if($boolResult == false)
