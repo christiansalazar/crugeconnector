@@ -17,3 +17,79 @@ full wiki, documentation & installation:
 Screen Shot:
 
 ![CrugeConnector Screen Capture](https://bitbucket.org/christiansalazarh/crugeconnector/downloads/crugeconnector--viewlogin.png "CrugeConnector Screen Capture")
+
+quick setup:
+
+1. in protected/config/main.php, under 'imports' key:
+	
+	'application.extensions.crugeconnector.*',	
+
+2. in protected/config/main.php, under 'components' key:
+
+	'crugeconnector'=>array(
+	'class'=>'ext.crugeconnector.CrugeConnector',
+		'hostcontrollername'=>'site',
+		'onSuccess'=>array('site/loginsuccess'),
+		'onError'=>array('site/loginerror'),
+		'clients'=>array(
+			'facebook'=>array(
+				// required by crugeconnector:
+				'enabled'=>true,
+				'class'=>'ext.crugeconnector.clients.Facebook',
+				'callback'=>'http://yoursite.com/app/facebookcallback.php',
+				// required by remote interface:
+				'client_id'=>"yourappid",
+				'client_secret'=>"yoursecretid",
+				'scope'=>'email, read_stream',
+			),	
+			'google'=>array(
+				// required by crugeconnector:
+				'enabled'=>true,
+				'class'=>'ext.crugeconnector.clients.Google',
+				'callback'=>'http://yoursite.com/app1/googlecallback.php',
+				// required by remote interface:
+				'hostname'=>'yoursite.com',
+				'identity'=>'https://www.google.com/accounts/o8/id',
+				'scope'=>array('contact/email'),
+			),
+			'tester'=>array(
+				// required by crugeconnector:
+				'enabled'=>true,
+				'class'=>'ext.crugeconnector.clients.Tester',
+				// required by remote interface:
+			),
+		),
+	),
+
+3. in protected/controllers/siteContoller.php (by default)
+
+	public function actions()
+	{
+		return array(
+			'captcha'=>array(
+				'class'=>'CCaptchaAction',
+				'backColor'=>0xFFFFFF,
+			),
+			'page'=>array(
+				'class'=>'CViewAction',
+			),
+			// ADD THIS:
+			'crugeconnector'=>array('class'=>'CrugeConnectorAction'),
+		);
+	}
+
+	// and this actions:
+
+	public function actionLoginSuccess($key){
+
+		$loginData = Yii::app()->crugeconnector->getStoredData();
+		// loginData: remote user information in JSON format.
+
+		$info = $loginData;
+		$this->renderText('<h1>Welcome!</h1><p>'.$info.'</p> key='.$key);
+	}
+
+	public function actionLoginError($key, $message=''){
+		$this->renderText('<h1>Login Error</h1><p>'.$message.'</p> key='.$key);
+	}
+
