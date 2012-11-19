@@ -215,7 +215,7 @@ class CrugeConnector extends CApplicationComponent {
 	 */
 	public function getClientLoginUrl($key) {
 		if($c = $this->getKey($key)) {
-			return array($this->hostcontrollername.'/'.$this->actionconnector
+			return array('/'.$this->hostcontrollername.'/'.$this->actionconnector
 					,'crugekey'=>$key,'crugemode'=>'login');
 		}else
 		return '';
