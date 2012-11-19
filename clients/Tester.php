@@ -41,15 +41,35 @@ class Tester  extends CrugeBaseClient
 	 * @return bool boolean result true if login is correct.
 	 */
 	public function doCallback(){
-		//$this->setLastError('testing');
-		//return false;
-		//
-		// test this using:
-		//	http://coco/crugeconnectorapp/tester-callback.php
-		// it will redirect to:
-		//  http://coco/crugeconnectorapp/index.php?r=site/error&message=testing
 
-		$this->setData('hello');
+		// you can enable or disable any of this cases:
+		
+		// google simulation:
+		//
+		/*
+		$this->setKey('google');
+		$this->setData(CJSON::encode(
+			array('contact/email'=>'jondoe@xyz.com')));
+		*/
+
+		// facebook simulation: 
+		//
+		$this->setKey('facebook');
+		$this->setData(CJSON::encode(
+			array(
+				'username'=>'jdoe',
+				'email'=>'jondoe@xyz.com',
+				'first_name'=>'Jon',
+				'last_name'=>'Doe',
+			)));
+
 		return true;
+
+		// error simulation:
+		//
+		/*
+		$this->setLastError('some error here');
+		return false;
+		*/
 	}
 }
