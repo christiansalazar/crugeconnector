@@ -57,7 +57,7 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 			),
 			'tester'=>array(
 				// required by crugeconnector:
-				'enabled'=>true,
+				'enabled'=>false,
 				'class'=>'ext.crugeconnector.clients.Tester',
 				// required by remote interface:
 			),
@@ -96,13 +96,12 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 		$this->renderText('<h1>Login Error</h1><p>'.$message.'</p> key='.$key);
 	}
 ~~~
-
 ~~~
 4- insert the component into your protected/views/site/login view:
 ~~~
 	<?php if(Yii::app()->crugeconnector->hasEnabledClients){ ?>
 	<div class='crugeconnector'>
-		<span>Tambien puedes iniciar sesión con:</span>
+		<span>Use your Facebook or Google account:</span>
 		<ul>
 		<?php 
 			$cc = Yii::app()->crugeconnector;
