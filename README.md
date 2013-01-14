@@ -125,7 +125,7 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 	$yii=dirname(__FILE__).'/../yii/framework/yii.php';
 	$config=dirname(__FILE__).'/protected/config/main.php';
 	
-	defined('YII_DEBUG') or define('YII_DEBUG',false)
+	defined('YII_DEBUG') or define('YII_DEBUG',false);
 	defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
 	
 	$_GET['r'] = '/site/crugeconnector';	// <--using 'site' ?
@@ -145,7 +145,7 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 	$yii=dirname(__FILE__).'/../yii/framework/yii.php';
 	$config=dirname(__FILE__).'/protected/config/main.php';
 	
-	defined('YII_DEBUG') or define('YII_DEBUG',false)
+	defined('YII_DEBUG') or define('YII_DEBUG',false);
 	defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
 	
 	$_GET['r'] = '/site/crugeconnector';	// <--using 'site' ?
