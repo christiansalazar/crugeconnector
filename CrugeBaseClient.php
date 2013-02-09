@@ -78,6 +78,7 @@ abstract class CrugeBaseClient {
 		$this->data = $anyData;
 		$this->push();
 	}
+	/*
 	private function push(){
 		$s = new CHttpSession();
 		$s->open();
@@ -91,6 +92,17 @@ abstract class CrugeBaseClient {
 		$s->close();
 		return $data;
 	}
+	*/
+
+	private function push(){
+		$_SESSION['__crugeconnector_data__'] = $this->getData();
+	}
+	public static function getStoredData() {
+		if(isset($_SESSION['__crugeconnector_data__']))
+		  return $_SESSION['__crugeconnector_data__'];
+    	return null;
+    }
+
 	public function getData(){
 		return $this->data;
 	}
