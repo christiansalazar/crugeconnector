@@ -78,22 +78,17 @@ abstract class CrugeBaseClient {
 		$this->data = $anyData;
 		$this->push();
 	}
-	/*
+	
 	private function push(){
-		$s = new CHttpSession();
-		$s->open();
+		$s = Yii::app()->session;
 		$s[self::$_sessionkeyname] = $this->getData();
-		$s->close();
 	}
 	public static function getStoredData() {
-		$s = new CHttpSession();
-		$s->open();
+		$s = Yii::app()->session;
 		$data = $s[self::$_sessionkeyname];
-		$s->close();
 		return $data;
 	}
-	*/
-
+	/*
 	private function push(){
 		$_SESSION['__crugeconnector_data__'] = $this->getData();
 	}
@@ -102,6 +97,7 @@ abstract class CrugeBaseClient {
 		  return $_SESSION['__crugeconnector_data__'];
     	return null;
     }
+	*/
 
 	public function getData(){
 		return $this->data;
