@@ -60,13 +60,8 @@
  * STEP2 - Each connector needs a callback: create a copy of index.php and 
  * add this extra code:
  * <code>
- *	..blabla..
- *  $_GET['r'] = '/site/crugeconnector';
- *  $_GET['crugekey'] = 'tester';     <-- put here the key name of your client
- *  $_GET['crugemode'] = 'callback';  <-- always put here 'callback'
- *  ...blabla..
- *  Yii::createWebApplication($config)->run();
- * </code>
+ *		SEE README for an example
+ *  </code>
  *
  *
  * STEP3 - in siteController.php add a new  static action:

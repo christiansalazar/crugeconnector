@@ -49,7 +49,9 @@ abstract class CrugeBaseClient {
 	public function getIsCallback(){
 		return $this->mode=='callback';
 	}
-
+	public function getIsError(){
+		return $this->mode=='error';
+	}
 
 	/**
 	 * setParameters 
@@ -78,26 +80,15 @@ abstract class CrugeBaseClient {
 		$this->data = $anyData;
 		$this->push();
 	}
-	
+
 	private function push(){
-		$s = Yii::app()->session;
-		$s[self::$_sessionkeyname] = $this->getData();
+		Yii::app()->session['__crugeconnector_data__'] = $this->getData();
 	}
 	public static function getStoredData() {
-		$s = Yii::app()->session;
-		$data = $s[self::$_sessionkeyname];
-		return $data;
-	}
-	/*
-	private function push(){
-		$_SESSION['__crugeconnector_data__'] = $this->getData();
-	}
-	public static function getStoredData() {
-		if(isset($_SESSION['__crugeconnector_data__']))
-		  return $_SESSION['__crugeconnector_data__'];
+		if(isset(Yii::app()->session['__crugeconnector_data__']))
+		  return Yii::app()->session['__crugeconnector_data__'];
     	return null;
     }
-	*/
 
 	public function getData(){
 		return $this->data;
@@ -109,7 +100,6 @@ abstract class CrugeBaseClient {
 	public function getLastError(){
 		return $this->lasterror;
 	}
-
 
 	/**
 	 * response 
@@ -147,26 +137,12 @@ abstract class CrugeBaseClient {
 		$url = $onError;
 		if($boolResult == true)
 			$url = $onSuccess;
-	
-		// it is necesary to build the url by hand, not using the
-		// provided CHtml::normalizeUrl, reason: when running under callback
-		// the normalizeUrl will return a url relative to callback causing
-		// a recursive header locations.
-		$n=0;
-		$url_dest = Yii::app()->baseUrl.'/index.php?r=';
-		foreach($url as $k=>$v){
-			if($n==0){
-				$url_dest .= $v;
-			}else{
-				$url_dest .= '&'.$k.'='.CHtml::encode($v);
-			}
-			$n++;
-		}
 
-		// always informs about which key is used:
-		//
-		$url_dest .= '&key='.$this->getKey();
-		
+		$url['key']=$this->getKey(); 
+		$url_dest = CHtml::normalizeUrl($url);
+
+		Yii::log(__METHOD__.",[BUILD_URL] url_dest=[{$url_dest}]","crugeconnector");
+
 		// if an error is present then must send the error via url
 		//
 		if($boolResult == false)
