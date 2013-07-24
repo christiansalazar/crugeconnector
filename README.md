@@ -116,45 +116,22 @@ Christian Salazar H. <christiansalazarh@gmail.com>
 ~~~
 5- create a callback (one for google and another one for facebook)
 ~~~
-	the first one for facebook: (dont forget to create a facebook app)
-	
-	<?php
-	// copy this code into /yourapp/facebook-callback.php
-	// don't forget to stablish the $yii path !!
-	//
-	$yii=dirname(__FILE__).'/../yii/framework/yii.php';
-	$config=dirname(__FILE__).'/protected/config/main.php';
-	
-	defined('YII_DEBUG') or define('YII_DEBUG',false);
-	defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
-	
-	$_GET['r'] = '/site/crugeconnector';	// <--using 'site' ?
-	$_GET['crugekey'] = 'facebook';			// <--facebook key
-	$_GET['crugemode'] = 'callback';
-	
-	require_once($yii);
-	Yii::createWebApplication($config)->run();
-	?>
+<?php
+// SAVE AS yourapp/facebook-callback.php, review your config main settings, must match.
 
-	and another one for google: 
+// SELECT URL MODE.
 
-	<?php
-	// copy this code into /yourapp/google-callback.php
-	// don't forget to stablish the $yii path !!
-	//
-	$yii=dirname(__FILE__).'/../yii/framework/yii.php';
-	$config=dirname(__FILE__).'/protected/config/main.php';
-	
-	defined('YII_DEBUG') or define('YII_DEBUG',false);
-	defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
-	
-	$_GET['r'] = '/site/crugeconnector';	// <--using 'site' ?
-	$_GET['crugekey'] = 'google';			// <--google key
-	$_GET['crugemode'] = 'callback';
-	
-	require_once($yii);
-	Yii::createWebApplication($config)->run();
-	?>
+// USE THIS WHEN URL MANAGER IS ACTIVATED, must match your URL rules: 
+// DONT FORGET "?" at the end.
+// $url = "index.php/site/crugeconnector/crugekey/facebook/crugemode/callback?";
 
+// USE THIS WHEN YOU ARE NOT USING URL MANAGER:
+// 
+$url = "index.php?r=/site/crugeconnector&crugekey=facebook&crugemode=callback";
+
+// common code:
+foreach($_GET as $key=>$val)
+	$url .= "&".$key."=".urlencode($val);
+header("Location: ".$url);
 ~~~
 

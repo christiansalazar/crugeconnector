@@ -117,6 +117,13 @@ class CrugeConnector extends CApplicationComponent {
 		return CrugeBaseClient::getStoredData();
 	}
 
+	private function args($ar){
+		$txt = '';
+		foreach($ar as $k=>$v)
+			$txt .= "[{$k}={$v}]";
+		return $txt;
+	}
+
 	/**
 	 * execute 
 	 *	a) called to start login process.
@@ -136,7 +143,8 @@ class CrugeConnector extends CApplicationComponent {
 	 * @return void
 	 */
 	public function execute($key, $mode) {
-
+		Yii::log(__METHOD__.','.$this->args(array('key'=>$key,'mode'=>$mode))
+			,"crugeconnector");
 		// no matter mode is login or callback, it always loads the 
 		// client config for this key
 		//
@@ -150,6 +158,8 @@ class CrugeConnector extends CApplicationComponent {
 		$client = $this->_findClient($key,$keyconfig);
 		// _findClient throws an exception if something goes wrong.
 
+		Yii::log(__METHOD__."[mode=".$mode."][_findClient_key=".$key."]","crugeconnector");
+
 		// interface consumer:
 		//
 		$client->setKey($key);
@@ -161,7 +171,10 @@ class CrugeConnector extends CApplicationComponent {
 		}elseif($client->getIsCallback()){
 			$client->response($client->doCallback()
 					,$this->onSuccess, $this->onError);
-		}else
+		}elseif($client->getIsError()){
+			throw new CHttpException("Cannot login");
+		}
+		else
 			throw new Exception('Invalid modality value, must be '.
 			'login or callback. please review your callback configuration.');
 	}
@@ -242,6 +255,11 @@ class CrugeConnector extends CApplicationComponent {
 	 * @return false or array(..key parameters..);
 	 */
 	public function getKeyExists($key){
+
+		Yii::log(__METHOD__.','.$this->args(array('key'=>$key))
+			,"crugeconnector");
+
+
 		foreach($this->clients as $k=>$v)
 			if($k == $key)
 				return $v;
@@ -268,6 +286,11 @@ class CrugeConnector extends CApplicationComponent {
 	 * @return an instance which implements ICrugeClient
 	 */
 	private function _findClient($key, $keyconfig){
+
+		Yii::log(__METHOD__.','.$this->args(array('key'=>$key))
+			,"crugeconnector");
+
+
 		$alias = $keyconfig['class'];
 		$path = Yii::getPathOfAlias($alias).'.php';
 		if(!file_exists($path))

@@ -95,6 +95,26 @@ class LightOpenID
         }
     }
 
+
+	/**
+	  	avoids the ERROR3 in validate() because the returning URL contains arguments and
+		never match the return url specified in config/main.php
+	 	by: Christian Salazar <christiansalazarh@gmail.com>
+
+		A:
+		"http://121.229.23.233/crugeconnectorapp/google-callback.php",
+		B:
+		"http://121.229.23.233/crugeconnectorapp/index.php?r=/site/crugeconnector&crugekey=google&crugemode=callback&openid_ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid_mode=id_res&openid_op_endpoint=https%3A%2F%2Fwww.google.com%2Faccounts%2Fo8%2Fud&openid_response_nonce=2013-07-24T19%3A47%3A18ZVt--8CXcjhKAKA&openid_return_to=http%3A%2F%2F162.209.13.152%3A9999%2Fcrugeconnectorapp%2Fgoogle-callback.php&openid_assoc_handle=1.AMlYA9VnFO94L30UKCbGxSTll6NKAGJMkcuX8-id5g4UxkI5ewDcbtQ6yS-fPcBm&openid_signed=op_endpoint%2Cclaimed_id%2Cidentity%2Creturn_to%2Cresponse_nonce%2Cassoc_handle%2Cns.ext1%2Cext1.mode%2Cext1.type.contact_email%2Cext1.value.contact_email&openid_sig=qXSWW7xi5uKNmDzfkS6CRf2O3sM%3D&openid_identity=https%3A%2F%2Fwww.google.com%2Faccounts%2Fo8%2Fid%3Fid%3DAItOawm_kHpDpR0yPvSQfZoNq2GSNomVeLkJCBk&openid_claimed_id=https%3A%2F%2Fwww.google.com%2Faccounts%2Fo8%2Fid%3Fid%3DAItOawm_kHpDpR0yPvSQfZoNq2GSNomVeLkJCBk&openid_ns_ext1=http%3A%2F%2Fopenid.net%2Fsrv%2Fax%2F1.0&openid_ext1_mode=fetch_response&openid_ext1_type_contact_email=http%3A%2F%2Faxschema.org%2Fcontact%2Femail&openid_ext1_value_contact_email=christiansalazarh%40gmail.com",
+		
+		B is the callbackresponse, so i consider it is sufficient to perform a comparison
+		in which A is contained in B
+	 */
+	function b_contains_a($a, $b){
+		$aa = strrev(strstr(strrev($a),"/"));
+		$bb = strrev(strstr(strrev($b),"/"));
+		return substr($bb, 0, strlen($aa))==$aa;
+	}
+
     function __set($name, $value)
     {
         switch ($name) {
@@ -688,10 +708,12 @@ class LightOpenID
         # mode 'setup_needed' (for 2.0). Also catching all modes other than
         # id_res, in order to avoid throwing errors.
         if(isset($this->data['openid_user_setup_url'])) {
+			Yii::log(__METHOD__."[ERROR1]","crugeconnector");
             $this->setup_url = $this->data['openid_user_setup_url'];
             return false;
         }
         if($this->mode != 'id_res') {
+			Yii::log(__METHOD__."[ERROR2]","crugeconnector");
             return false;
         }
 
@@ -716,9 +738,11 @@ class LightOpenID
                              .  'openid.claimed_id=' . $this->claimed_id;
         }
 
-        if ($this->data['openid_return_to'] != $this->returnUrl) {
+        if (!$this->b_contains_a($this->data['openid_return_to'],$this->returnUrl)) {
             # The return_to url must match the url of current request.
             # I'm assuing that noone will set the returnUrl to something that doesn't make sense.
+			Yii::log(__METHOD__."[ERROR3][OPENID_RETURN_TO][".$this->data['openid_return_to']
+					."][NOT MATCH][CONFIG_RETURNURL][".$this->returnUrl."]","crugeconnector");
             return false;
         }
 
@@ -740,6 +764,8 @@ class LightOpenID
 
         $response = $this->request($server, 'POST', $params);
 
+		Yii::log(__METHOD__."[CHECK_AUTHENTICATION]\n".
+				json_encode($response),"crugeconnector");
         return preg_match('/is_valid\s*:\s*true/i', $response);
     }
 

@@ -49,7 +49,9 @@ abstract class CrugeBaseClient {
 	public function getIsCallback(){
 		return $this->mode=='callback';
 	}
-
+	public function getIsError(){
+		return $this->mode=='error';
+	}
 
 	/**
 	 * setParameters 
@@ -78,28 +80,13 @@ abstract class CrugeBaseClient {
 		$this->data = $anyData;
 		$this->push();
 	}
-	/*
-	private function push(){
-		$s = new CHttpSession();
-		$s->open();
-		$s[self::$_sessionkeyname] = $this->getData();
-		$s->close();
-	}
-	public static function getStoredData() {
-		$s = new CHttpSession();
-		$s->open();
-		$data = $s[self::$_sessionkeyname];
-		$s->close();
-		return $data;
-	}
-	*/
 
 	private function push(){
-		$_SESSION['__crugeconnector_data__'] = $this->getData();
+		Yii::app()->session['__crugeconnector_data__'] = $this->getData();
 	}
 	public static function getStoredData() {
-		if(isset($_SESSION['__crugeconnector_data__']))
-		  return $_SESSION['__crugeconnector_data__'];
+		if(isset(Yii::app()->session['__crugeconnector_data__']))
+		  return Yii::app()->session['__crugeconnector_data__'];
     	return null;
     }
 
@@ -156,6 +143,7 @@ abstract class CrugeBaseClient {
 		// provided CHtml::normalizeUrl, reason: when running under callback
 		// the normalizeUrl will return a url relative to callback causing
 		// a recursive header locations.
+		/*
 		$n=0;
 		$url_dest = Yii::app()->baseUrl.'/index.php?r=';
 		foreach($url as $k=>$v){
@@ -166,11 +154,14 @@ abstract class CrugeBaseClient {
 			}
 			$n++;
 		}
-
-		// always informs about which key is used:
-		//
 		$url_dest .= '&key='.$this->getKey();
-		
+		*/	
+
+		$url['key']=$this->getKey(); 
+		$url_dest = CHtml::normalizeUrl($url);
+
+		Yii::log(__METHOD__.",[BUILD_URL] url_dest=[{$url_dest}]","crugeconnector");
+
 		// if an error is present then must send the error via url
 		//
 		if($boolResult == false)

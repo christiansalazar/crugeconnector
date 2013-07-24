@@ -41,6 +41,7 @@ class Tester  extends CrugeBaseClient
 	 * @return bool boolean result true if login is correct.
 	 */
 	public function doCallback(){
+		Yii::log(__METHOD__."[docallback invoked for tester]","crugeconnector");
 
 		// you can enable or disable any of this cases:
 		

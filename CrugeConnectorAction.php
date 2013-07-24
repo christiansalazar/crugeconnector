@@ -16,7 +16,7 @@ class CrugeConnectorAction extends CAction {
 	public function run(){
 		$key = $_GET['crugekey'];
 		$mode = $_GET['crugemode'];
-		Yii::log(__METHOD__.', key='.$key,'crugeconnector');	
+		Yii::log(__METHOD__.', key='.$key.', mode='.$mode,'crugeconnector');	
 		//$inst = new CrugeConnector();
 		$inst = Yii::app()->crugeconnector;
 		$inst->execute($key, $mode);
